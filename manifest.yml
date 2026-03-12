@@ -10,25 +10,25 @@ url_to_dependency_map:
   version: "$1"
 
 dependencies:
-# FIPS Go 1.22.10 - Built with golang-fips/go, links against system OpenSSL
+# FIPS Go 1.22.12 - Built with golang-fips/go, links against system OpenSSL
 - name: go
-  version: 1.22.10
-  uri: https://github.com/ivo1116/fips-go-fs5/releases/download/v1.0.0/go_1.22.10-fips_linux_x64_cflinuxfs5.tgz
-  sha256: PLACEHOLDER_SHA256_1_22_10
+  version: 1.22.12
+  uri: https://github.com/ivo1116/fips-go-fs5/releases/download/v1.0.0/go_1.22.12-fips_linux_x64_cflinuxfs5.tgz
+  sha256: 664e57bbadff075484f6d3c3d9de7cb5ac13844ab0dcf7f538e55f3740972d05
   cf_stacks:
   - cflinuxfs5
-  source: https://github.com/golang-fips/go
-  source_sha256: PLACEHOLDER_SOURCE_SHA256
+  source: https://github.com/golang-fips/go/releases/tag/go1.22.12-1-openssl-fips
+  source_sha256: 664e57bbadff075484f6d3c3d9de7cb5ac13844ab0dcf7f538e55f3740972d05
 
-# FIPS Go 1.23.4 - Built with golang-fips/go, links against system OpenSSL
+# FIPS Go 1.23.12 - Built with golang-fips/go, links against system OpenSSL
 - name: go
-  version: 1.23.4
-  uri: https://github.com/ivo1116/fips-go-fs5/releases/download/v1.0.0/go_1.23.4-fips_linux_x64_cflinuxfs5.tgz
-  sha256: PLACEHOLDER_SHA256_1_23_4
+  version: 1.23.12
+  uri: https://github.com/ivo1116/fips-go-fs5/releases/download/v1.0.0/go_1.23.12-fips_linux_x64_cflinuxfs5.tgz
+  sha256: 48c6e361b998e1aee8abe9213549062e8cfd05a50c37e877c8987b5960f436e1
   cf_stacks:
   - cflinuxfs5
-  source: https://github.com/golang-fips/go
-  source_sha256: PLACEHOLDER_SOURCE_SHA256
+  source: https://github.com/golang-fips/go/releases/tag/go1.23.12-1-openssl-fips
+  source_sha256: 48c6e361b998e1aee8abe9213549062e8cfd05a50c37e877c8987b5960f436e1
 
 # dep - vendor tool (from upstream go-buildpack)
 - name: dep
