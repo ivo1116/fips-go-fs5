@@ -1,0 +1,10 @@
+Cloud Foundry FIPS Go Buildpack
+Copyright (c) 2024-present. All Rights Reserved.
+
+This product includes software developed at Cloud Foundry (http://www.cloudfoundry.org).
+
+This buildpack uses golang-fips/go (https://github.com/golang-fips/go) which is
+based on Go (https://golang.org) with patches to use system OpenSSL for FIPS compliance.
+
+Go is licensed under a BSD-style license (https://golang.org/LICENSE).
+golang-fips/go patches are licensed under BSD-style license.

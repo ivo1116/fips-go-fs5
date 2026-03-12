@@ -1,0 +1,75 @@
+---
+language: go
+default_versions:
+- name: go
+  version: 1.22.x
+
+url_to_dependency_map:
+- match: go(\d+\.\d+(\.\d+)?)
+  name: go
+  version: "$1"
+
+dependencies:
+# FIPS Go 1.22.10 - Built with golang-fips/go, links against system OpenSSL
+- name: go
+  version: 1.22.10
+  uri: https://github.com/ivo1116/fips-go-fs5/releases/download/v1.0.0/go_1.22.10-fips_linux_x64_cflinuxfs5.tgz
+  sha256: PLACEHOLDER_SHA256_1_22_10
+  cf_stacks:
+  - cflinuxfs5
+  source: https://github.com/golang-fips/go
+  source_sha256: PLACEHOLDER_SOURCE_SHA256
+
+# FIPS Go 1.23.4 - Built with golang-fips/go, links against system OpenSSL
+- name: go
+  version: 1.23.4
+  uri: https://github.com/ivo1116/fips-go-fs5/releases/download/v1.0.0/go_1.23.4-fips_linux_x64_cflinuxfs5.tgz
+  sha256: PLACEHOLDER_SHA256_1_23_4
+  cf_stacks:
+  - cflinuxfs5
+  source: https://github.com/golang-fips/go
+  source_sha256: PLACEHOLDER_SOURCE_SHA256
+
+# dep - vendor tool (from upstream go-buildpack)
+- name: dep
+  version: 0.5.4
+  uri: https://github.com/ivanovac/go-buildpack/releases/download/v1.11.00-beta-cflinuxfs5/dep_0.5.4_linux_x64_cflinuxfs5.tgz
+  sha256: e5963ae89ab6057921f7d46d377895b428ac8aaef864096853c6af581b742844
+  cf_stacks:
+  - cflinuxfs5
+  source: https://github.com/golang/dep/archive/v0.5.4.tar.gz
+  source_sha256: 929c8f759838f98323211ba408a831ea80d93b75beda8584b6d950f393a3298a
+
+# glide - vendor tool (from upstream go-buildpack)
+- name: glide
+  version: 0.13.3
+  uri: https://github.com/ivanovac/go-buildpack/releases/download/v1.11.00-beta-cflinuxfs5/glide_0.13.3_linux_x64_cflinuxfs5.tgz
+  sha256: 7153922d2571a7017fe47bd607f55bc5aca4e66984e8148a4af78ac03abff9a7
+  cf_stacks:
+  - cflinuxfs5
+  source: https://github.com/Masterminds/glide/archive/v0.13.3.tar.gz
+  source_sha256: 817dad2f25303d835789c889bf2fac5e141ad2442b9f75da7b164650f0de3fee
+
+# godep - vendor tool (from upstream go-buildpack)
+- name: godep
+  version: '80'
+  uri: https://github.com/ivanovac/go-buildpack/releases/download/v1.11.00-beta-cflinuxfs5/godep_80_linux_x64_cflinuxfs5.tgz
+  sha256: f55cc704dec6f10cd2b2ecb3bbf087054c41377d7bfe0d320ae6cdbcff84c319
+  cf_stacks:
+  - cflinuxfs5
+  source: https://github.com/tools/godep/archive/v80.tar.gz
+  source_sha256: '029adc1a0ce5c63cd40b56660664e73456648e5c031ba6c214ba1e1e9fc86cf6'
+
+include_files:
+- LICENSE
+- NOTICE
+- README.md
+- VERSION
+- bin/compile
+- bin/detect
+- bin/finalize
+- bin/release
+- bin/supply
+- manifest.yml
+
+pre_package: scripts/build.sh
