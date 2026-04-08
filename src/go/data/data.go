@@ -38,7 +38,6 @@ func FIPSScript() string {
 # This enables FIPS mode for Go applications using system OpenSSL
 
 export GOLANG_FIPS=1
-export OPENSSL_FORCE_FIPS_MODE=1
 
 # Verify FIPS mode is available
 if [ -f /proc/sys/crypto/fips_enabled ]; then

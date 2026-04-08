@@ -1,5 +1,5 @@
 {
-  "stack": "cflinuxfs5",
+  "stack": "cflinuxfs5-fips",
   "oses": [
     "linux"
   ],

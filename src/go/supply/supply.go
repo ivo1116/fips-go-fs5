@@ -171,7 +171,7 @@ func (gs *Supplier) WriteFIPSProfileD() error {
 	if err := gs.Stager.WriteProfileD("fips.sh", data.FIPSScript()); err != nil {
 		return err
 	}
-	gs.Log.Info("FIPS environment variables set: GOLANG_FIPS=1, OPENSSL_FORCE_FIPS_MODE=1")
+	gs.Log.Info("FIPS environment variables set: GOLANG_FIPS=1")
 	return nil
 }
 
