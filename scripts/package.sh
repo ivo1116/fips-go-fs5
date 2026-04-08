@@ -15,7 +15,7 @@ source "${ROOTDIR}/scripts/.util/print.sh"
 
 function main() {
   local stack version cached output
-  stack="cflinuxfs5"
+  stack="cflinuxfs5-fips"
   cached="false"
   output="${ROOTDIR}/build/buildpack.zip"
 
@@ -102,7 +102,7 @@ function package::buildpack() {
       "--version=${version}" \
       "--cached=${cached}" \
       "${stack_flag}" \
-    | xargs -n1 | grep -e '\.zip$'
+    | xargs -n1 | grep --color=never -e '\.zip$'
   )"
 
   mv "${file}" "${output}"

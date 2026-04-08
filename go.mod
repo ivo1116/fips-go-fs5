@@ -1,6 +1,8 @@
 module github.com/ivo1116/fips-go-fs5
 
-go 1.22.0
+go 1.22.5
+
+toolchain go1.24.3
 
 require (
 	github.com/Dynatrace/libbuildpack-dynatrace v1.8.0
@@ -9,14 +11,15 @@ require (
 )
 
 require (
-	code.cloudfoundry.org/lager v2.0.0+incompatible // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
-	github.com/paketo-buildpacks/packit v1.3.1 // indirect
-	github.com/paketo-buildpacks/packit/v2 v2.16.0 // indirect
-	github.com/tidwall/gjson v1.18.0 // indirect
-	github.com/tidwall/match v1.1.1 // indirect
-	github.com/tidwall/pretty v1.2.1 // indirect
-	github.com/ulikunitz/xz v0.5.12 // indirect
+	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
+	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/kr/pretty v0.3.0 // indirect
+	github.com/onsi/gomega v1.34.1 // indirect
+	github.com/rogpeppe/go-internal v1.9.0 // indirect
+	golang.org/x/net v0.30.0 // indirect
+	golang.org/x/sys v0.26.0 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
