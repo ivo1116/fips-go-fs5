@@ -524,6 +524,12 @@ func (gf *Finalizer) CompileApp() error {
 		os.Setenv("GOROOT", goRoot)
 		os.Setenv("PATH", filepath.Join(goRoot, "bin")+":"+os.Getenv("PATH"))
 		gf.Log.Info("-----> Set GOROOT=%s", goRoot)
+
+		// CRITICAL: Prevent Go 1.21+ toolchain auto-download feature from
+		// replacing our FIPS Go with a standard Go version. If go.mod specifies
+		// a newer Go version, Go would download and use that version instead.
+		os.Setenv("GOTOOLCHAIN", "local")
+		gf.Log.Info("-----> Set GOTOOLCHAIN=local (preventing auto-download of non-FIPS Go)")
 	} else {
 		// Log all candidates we tried for debugging
 		gf.Log.Warning("FIPS Go not found at expected paths:")
