@@ -499,11 +499,45 @@ func (gf *Finalizer) SetInstallPackages() error {
 func (gf *Finalizer) CompileApp() error {
 	cmd := "go"
 
-	// Use the FIPS Go binary directly to ensure we don't fall back to system Go
-	fipsGoPath := filepath.Join(gf.Stager.DepDir(), "go"+gf.GoVersion, "go", "bin", "go")
-	if _, err := os.Stat(fipsGoPath); err == nil {
+	// Use the FIPS Go binary directly to ensure we don't fall back to system Go.
+	// Try multiple possible paths since the tarball extraction structure may vary.
+	goDir := filepath.Join(gf.Stager.DepDir(), "go"+gf.GoVersion)
+	candidatePaths := []string{
+		filepath.Join(goDir, "go", "bin", "go"),  // tarball with go/ prefix
+		filepath.Join(goDir, "bin", "go"),         // tarball without prefix
+	}
+
+	var fipsGoPath string
+	for _, p := range candidatePaths {
+		if _, err := os.Stat(p); err == nil {
+			fipsGoPath = p
+			break
+		}
+	}
+
+	if fipsGoPath != "" {
 		cmd = fipsGoPath
 		gf.Log.Info("-----> Using FIPS Go at %s", fipsGoPath)
+
+		// Also set GOROOT and prepend to PATH to ensure all sub-tools use FIPS Go
+		goRoot := filepath.Dir(filepath.Dir(fipsGoPath)) // strip /bin/go
+		os.Setenv("GOROOT", goRoot)
+		os.Setenv("PATH", filepath.Join(goRoot, "bin")+":"+os.Getenv("PATH"))
+		gf.Log.Info("-----> Set GOROOT=%s", goRoot)
+	} else {
+		// Log all candidates we tried for debugging
+		gf.Log.Warning("FIPS Go not found at expected paths:")
+		for _, p := range candidatePaths {
+			gf.Log.Warning("  tried: %s", p)
+		}
+		// Also list what's actually in the go install dir
+		if entries, err := os.ReadDir(goDir); err == nil {
+			for _, e := range entries {
+				gf.Log.Warning("  found: %s/%s (dir=%v)", goDir, e.Name(), e.IsDir())
+			}
+		} else {
+			gf.Log.Warning("  cannot read %s: %s", goDir, err)
+		}
 	}
 
 	args := []string{"install"}
