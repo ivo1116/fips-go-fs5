@@ -530,6 +530,11 @@ func (gf *Finalizer) CompileApp() error {
 		// a newer Go version, Go would download and use that version instead.
 		os.Setenv("GOTOOLCHAIN", "local")
 		gf.Log.Info("-----> Set GOTOOLCHAIN=local (preventing auto-download of non-FIPS Go)")
+
+		// CRITICAL: Enable CGO so golang-fips/go links against system OpenSSL.
+		// Without CGO, Go uses native (non-FIPS) crypto even with the FIPS fork.
+		os.Setenv("CGO_ENABLED", "1")
+		gf.Log.Info("-----> Set CGO_ENABLED=1 (required for OpenSSL FIPS backend)")
 	} else {
 		// Log all candidates we tried for debugging
 		gf.Log.Warning("FIPS Go not found at expected paths:")
