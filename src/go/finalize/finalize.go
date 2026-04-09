@@ -498,6 +498,14 @@ func (gf *Finalizer) SetInstallPackages() error {
 
 func (gf *Finalizer) CompileApp() error {
 	cmd := "go"
+
+	// Use the FIPS Go binary directly to ensure we don't fall back to system Go
+	fipsGoPath := filepath.Join(gf.Stager.DepDir(), "go"+gf.GoVersion, "go", "bin", "go")
+	if _, err := os.Stat(fipsGoPath); err == nil {
+		cmd = fipsGoPath
+		gf.Log.Info("-----> Using FIPS Go at %s", fipsGoPath)
+	}
+
 	args := []string{"install"}
 	args = append(args, gf.BuildFlags...)
 	args = append(args, gf.PackageList...)
@@ -528,6 +536,14 @@ func (gf *Finalizer) CreateStartupEnvironment(tempDir string) error {
 		return err
 	}
 
+	// Save FIPS profile.d scripts before ClearDepDir wipes them
+	var savedFIPSScript []byte
+	fipsScriptPath := filepath.Join(gf.Stager.DepDir(), "profile.d", "fips.sh")
+	if content, readErr := ioutil.ReadFile(fipsScriptPath); readErr == nil {
+		savedFIPSScript = content
+		gf.Log.Info("-----> Preserving FIPS profile.d script")
+	}
+
 	if os.Getenv("GO_INSTALL_TOOLS_IN_IMAGE") == "true" {
 		goRuntimeLocation := filepath.Join("$DEPS_DIR", gf.Stager.DepsIdx(), "go"+gf.GoVersion, "go")
 
@@ -537,6 +553,19 @@ func (gf *Finalizer) CreateStartupEnvironment(tempDir string) error {
 		if err := gf.Stager.ClearDepDir(); err != nil {
 			return err
 		}
+	}
+
+	// Restore FIPS profile.d script after ClearDepDir
+	if savedFIPSScript != nil {
+		profileDDir := filepath.Join(gf.Stager.DepDir(), "profile.d")
+		if err := os.MkdirAll(profileDDir, 0755); err != nil {
+			return err
+		}
+		if err := ioutil.WriteFile(filepath.Join(profileDDir, "fips.sh"), savedFIPSScript, 0755); err != nil {
+			gf.Log.Error("Unable to restore FIPS profile.d script: %s", err)
+			return err
+		}
+		gf.Log.Info("-----> Restored FIPS profile.d script")
 	}
 
 	if os.Getenv("GO_SETUP_GOPATH_IN_IMAGE") == "true" {
