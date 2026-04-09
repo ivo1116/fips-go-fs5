@@ -31,6 +31,7 @@ function main() {
 
       CGO_ENABLED=0 \
       GOOS="${os}" \
+      GOARCH="amd64" \
         go build \
           -mod vendor \
           -ldflags="-s -w" \
