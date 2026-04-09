@@ -251,7 +251,8 @@ func (gs *Supplier) InstallGo() error {
 		return err
 	}
 
-	if err := gs.Stager.AddBinDependencyLink(filepath.Join(goInstallDir, "bin", "go"), "go"); err != nil {
+	// The Go tarball extracts with a top-level go/ directory (go/bin/go, go/src/..., etc.)
+	if err := gs.Stager.AddBinDependencyLink(filepath.Join(goInstallDir, "go", "bin", "go"), "go"); err != nil {
 		return err
 	}
 
@@ -264,7 +265,7 @@ func (gs *Supplier) InstallGo() error {
 		return err
 	}
 
-	return gs.Stager.WriteEnvFile("GOROOT", filepath.Join(goInstallDir))
+	return gs.Stager.WriteEnvFile("GOROOT", filepath.Join(goInstallDir, "go"))
 }
 
 func (gs *Supplier) WriteConfigYml() error {

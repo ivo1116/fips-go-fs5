@@ -193,7 +193,7 @@ func (gf *Finalizer) VerifyFIPSCompilation() {
 		errorBuffer := new(bytes.Buffer)
 
 		// Use go tool nm to check for FIPS symbols
-		goPath := filepath.Join(gf.Stager.DepDir(), "go"+gf.GoVersion, "bin", "go")
+		goPath := filepath.Join(gf.Stager.DepDir(), "go"+gf.GoVersion, "go", "bin", "go")
 		err := gf.Command.Execute(gf.Stager.BuildDir(), buffer, errorBuffer, goPath, "tool", "nm", binaryPath)
 		if err != nil {
 			gf.Log.Warning("Could not check FIPS symbols in %s: %s", file.Name(), err)
